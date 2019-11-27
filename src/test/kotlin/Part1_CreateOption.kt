@@ -45,11 +45,11 @@ class Part1_CreateOption : StringSpec({
 
         // uncomment the lines below, and make them compile!
 
-        //val some1: Option<Int> = Option.Some(1)
-        //
-        //val someA: Option<Char> = Option.Some('a')
-        //
-        //val someStr: Option<String> = Option.Some("Choo-choo!")
+        val some1: Option<Int> = Option.Some(1)
+
+        val someA: Option<Char> = Option.Some('a')
+
+        val someStr: Option<String> = Option.Some("Choo-choo!")
     }
 
     /*  ~~~~~ HINTS / TIPS ~~~~~
@@ -71,13 +71,13 @@ class Part1_CreateOption : StringSpec({
 
         // uncomment the lines below, and make them compile!
 
-        //val none: Option<Int> = Option.None
-        //
-        //val some1: Option<Int> = Option.None
-        //
-        //val someA: Option<Char> = Option.None
-        //
-        //val someStr: Option<String> = Option.None
+        val none: Option<Int> = Option.None
+
+        val some1: Option<Int> = Option.None
+
+        val someA: Option<Char> = Option.None
+
+        val someStr: Option<String> = Option.None
     }
 
     /*   ~~~~~ HINTS / TIPS ~~~~~
@@ -100,12 +100,12 @@ class Part1_CreateOption : StringSpec({
 
         // When you get here, just uncomment the lines, and see some pattern matching on your Option data type
 
-        //val choo: Option<String> = Option.Some("SUCCESS!")
-        //
-        //when (choo) {
-        //    is Option.Some -> println("Result was ${choo.value})")
-        //    is Option.None -> println("Result a complete failure :'( ")
-        //}
+        val choo: Option<String> = Option.Some("SUCCESS!")
+
+        when (choo) {
+            is Option.Some -> println("Result was ${choo.value})")
+            is Option.None -> println("Result a complete failure :'( ")
+        }
 
         /*
             This might seem familiar, you might have implemented similar sealed classes?
@@ -129,18 +129,18 @@ class Part1_CreateOption : StringSpec({
 
             // uncomment, make this compile and pass the tests.
 
-            //val some1: Option<Int> = Option.Some(1)
-            //some1.map { it * 2 } shouldBe Option.Some(2)
-            //
-            //val optionalList: Option<List<Int>> = Option.Some(listOf(1, 2, 3, 4))
-            //optionalList.map { it.size } shouldBe Option.Some(4)
-            //
-            //// But what happens whe we map a function over None?
-            //val someNone: Option<Int> = Option.None
-            //someNone.map { it * 2 } shouldBe Option.None
-            //
-            //val noneList: Option<List<Int>> = Option.None
-            //noneList.map { it.size } shouldBe Option.None
+            val some1: Option<Int> = Option.Some(1)
+            some1.map { it * 2 } shouldBe Option.Some(2)
+
+            val optionalList: Option<List<Int>> = Option.Some(listOf(1, 2, 3, 4))
+            optionalList.map { it.size } shouldBe Option.Some(4)
+
+            // But what happens whe we map a function over None?
+            val someNone: Option<Int> = Option.None
+            someNone.map { it * 2 } shouldBe Option.None
+
+            val noneList: Option<List<Int>> = Option.None
+            noneList.map { it.size } shouldBe Option.None
         }
     }
 
@@ -197,19 +197,19 @@ class Part1_CreateOption : StringSpec({
 
             // uncomment, make this compile and pass the tests.
 
-            //val some1: Option<Int> = Option.Some(1)
-            //some1.flatMap { num -> if (num % 2 == 0) Option.Some(num) else Option.None } shouldBe Option.None
-            //
-            //val some2: Option<Int> = Option.Some(2)
-            //some2.flatMap { num -> if (num % 2 == 0) Option.Some(num) else Option.None } shouldBe Option.Some(2)
-            //
-            //// But what happens whe we flatMap a function over None?
-            //val someNone: Option<Int> = Option.None
-            //someNone.flatMap { num -> if (num % 2 == 0) Option.Some(num) else Option.None } shouldBe Option.None
-            //
-            //// yo dawg I heard you liked Option, so we put an option in an option...
-            //val nested: Option<Option<Int>> = Option.Some(Option.Some(4))
-            //nested.flatMap { it } shouldBe Option.Some(4)
+            val some1: Option<Int> = Option.Some(1)
+            some1.flatMap { num -> if (num % 2 == 0) Option.Some(num) else Option.None } shouldBe Option.None
+
+            val some2: Option<Int> = Option.Some(2)
+            some2.flatMap { num -> if (num % 2 == 0) Option.Some(num) else Option.None } shouldBe Option.Some(2)
+
+            // But what happens whe we flatMap a function over None?
+            val someNone: Option<Int> = Option.None
+            someNone.flatMap { num -> if (num % 2 == 0) Option.Some(num) else Option.None } shouldBe Option.None
+
+            // yo dawg I heard you liked Option, so we put an option in an option...
+            val nested: Option<Option<Int>> = Option.Some(Option.Some(4))
+            nested.flatMap { it } shouldBe Option.Some(4)
         }
     }
 
@@ -244,11 +244,11 @@ class Part1_CreateOption : StringSpec({
 
             // uncomment, make this compile and pass the tests.
 
-            //val some1: Option<Int> = Option.Some(1)
-            //some1.filter { it % 2 == 0 } shouldBe Option.None
-            //
-            //val some2: Option<Int> = Option.Some(2)
-            //some2.filter { it % 2 == 0 } shouldBe Option.Some(2)
+            val some1: Option<Int> = Option.Some(1)
+            some1.filter { it % 2 == 0 } shouldBe Option.None
+
+            val some2: Option<Int> = Option.Some(2)
+            some2.filter { it % 2 == 0 } shouldBe Option.Some(2)
         }
     }
 
@@ -269,11 +269,11 @@ class Part1_CreateOption : StringSpec({
 
         // uncomment, make this compile and pass the tests.
 
-        //val some2: Option<Int> = Option.Some(2)
-        //some2.fold(
-        //    ifNone = { 0 },
-        //    ifSome = { it * 4 }
-        //) shouldBe 8
+        val some2: Option<Int> = Option.Some(2)
+        some2.fold(
+            ifNone = { 0 },
+            ifSome = { it * 4 }
+        ) shouldBe 8
     }
 
     /*
@@ -303,9 +303,9 @@ class Part1_CreateOption : StringSpec({
      */
 
     "flatTap" {
-        // val flatTapped = Option.Some("Hello World").flatTap{ Option.Some(it.length) }
+         val flatTapped = Option.Some("Hello World").flatTap{ Option.Some(it.length) }
 
-        // flatTapped shouldBe Option.Some("Hello World")
+         flatTapped shouldBe Option.Some("Hello World")
     }
 
     /*

@@ -1,45 +1,21 @@
 package ExecuteUseCaseWithOption
 
-import java.lang.RuntimeException
+import Option
 
-// vv Change my return type to Option<String> vv
-fun executeUseCase(requestId: Int): String {
-
-    var request: Request? = receiveRequest(requestId)
-    if (request == null) {
-        return "Cannot find user with that request id"
-    }
-
-    var isValidated: Boolean = validateRequest(request)
-    if (!isValidated) {
-        return "Request is not valid"
-    }
-
-    canonicalizeEmail(request)
-
-    try {
-        var result: Boolean = db.updateDbFromRequest(request)
-        if (!result) {
-            return "Customer record not found"
-        }
-    } catch (e: DatabaseException) {
-        return "DB error: Customer record not updated"
-    }
-
-    if (!smtpServer.sendEmail(request.email)) {
-        log.error("Customer email not sent")
-    }
-
-    // If we get to here I think it is ok?! *prays*
-    return "OK";
-}
-
+fun executeUseCase(requestId: Int): Option<String> = receiveRequest(requestId)
+    .map { canonicalizeEmail(it) }
+    .filter { validateRequest(it) }
+    .flatMap { db.updateDbFromRequest(it) }
+    .flatTap { smtpServer.sendEmail(it.email) }
+    .map { "OK" }
 
 data class Request(var email: String, val firstName: String, val surname: String, val id: Int)
 
-// vv Change my return type vv
-fun receiveRequest(requestId: Int): Request? =
-    validRequests.find { it.id == requestId }
+fun receiveRequest(requestId: Int) =
+    when (val item = validRequests.find { it.id == requestId }) {
+        is Request -> Option.Some(item)
+        else -> Option.None
+    }
 
 val validRequests = listOf(
     Request("", "Steve", "Smith", 111),
@@ -51,43 +27,36 @@ val validRequests = listOf(
     Request("", "Prince", "", 7777)
 )
 
-// vv Change my return type vv
-fun canonicalizeEmail(request: Request): Unit {
-    request.email = "${request.firstName}.${request.surname}@railway.com"
-}
+fun canonicalizeEmail(request: Request) =
+    request.copy(email = "${request.firstName}.${request.surname}@railway.com")
 
-// vv Change my return type vv
 fun validateRequest(request: Request): Boolean =
     with(request) {
         email.isNotEmpty() && firstName.isNotEmpty() && surname.isNotEmpty()
     }
 
-
 val db = Database()
+
 class Database {
-
-    // vv Change my return type vv
-    fun updateDbFromRequest(request: Request): Boolean {
-        // not a nice DB, we only persist even Request ids!
-        return if (request.id % 2 == 0)
-            true
+    fun updateDbFromRequest(request: Request) =// not a nice DB, we only persist even Request ids!
+        if (request.id % 2 == 0)
+            Option.Some(request)
         else
-            false
-    }
+            Option.None
 }
-class DatabaseException(override val message: String?) : RuntimeException(message)
 
-val smtpServer= SMTPServer()
+val smtpServer = SMTPServer()
+
 class SMTPServer {
-    // vv Change my return type vv
-    fun sendEmail(email: String): Boolean =
+    fun sendEmail(email: String) =
         if ("\\w{1,}\\.\\w{1,}@railway.com$".toRegex().matches(email))
-            true // email sent
+            Option.Some(email) // email sent
         else
-            false // email not sent :( not in correct format
+            Option.None // email not sent :( not in correct format
 }
 
 val log = Log()
+
 class Log {
     fun error(s: String) = System.err.println(s)
 }

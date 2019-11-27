@@ -1,4 +1,6 @@
+import ExecuteUseCaseWithOption.executeUseCase
 import io.kotlintest.data.forall
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.kotlintest.tables.row
 
@@ -22,14 +24,14 @@ class Part2_UseOption : StringSpec({
         val rows = listOf(222, 666).toRows()
         forall(*rows) { id: Int ->
             // UNCOMMENT THIS...
-            // executeUseCase(id) shouldBe Option.Some("OK")
+             executeUseCase(id) shouldBe Option.Some("OK")
         }
     }
 
     "invalid requests" {
         forall(*listOf(111, 333, 444, 555, 777).toRows()) { id: Int ->
             // UNCOMMENT THIS...
-            // executeUseCase(id) shouldBe Option.None
+             executeUseCase(id) shouldBe Option.None
         }
     }
 
